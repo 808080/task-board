@@ -26,7 +26,6 @@
   .task {
     min-height: 118px;
     background-color: #f5f5f5;
-    border-radius: 4px;
     text-align: left;
     max-height: 150px;
     height: 100%;

@@ -129,6 +129,8 @@
 
   .task__wrap {
     cursor: all-scroll;
+    border-radius: 4px;
+    overflow: hidden;
   }
 
   .dragged {

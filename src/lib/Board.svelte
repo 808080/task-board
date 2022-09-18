@@ -106,8 +106,9 @@
   }
 
   .divider {
-    border-top: solid 1px #e9e9e9;
+    border: none;
     margin: 15px 20px;
+    border-top: solid 1px #e9e9e9;
   }
 
   .board__columns {
