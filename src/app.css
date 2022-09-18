@@ -60,3 +60,62 @@ body {
 .btn:hover {
   background-color: var(--light-blue);
 }
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.column__wrap:hover .add-btn {
+  opacity: 1;
+}
+
+.success:hover {
+  background-color: #51eb6b;
+}
+
+.danger:hover {
+  background-color: #E96880;
+}
+
+.modal input[type=text] {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  border: solid 1px #aaa;
+  border-radius: 4px;
+  font-size: 16px;
+  margin: 10px auto;
+}
+
+.icons-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.radio-icon {
+  cursor: pointer;
+  width: 40px;
+  padding: 5px;
+  border-radius: 12px;
+  background-color: #eee;
+  margin: 5px;
+  transition: .2s;
+}
+
+.radio-icon:hover {
+  filter: brightness(90%);
+}
+
+.radio-icon.selected {
+  background-color: #51eb6b;
+}
+
+.radio-icon input {
+  display: none;
+}
+
+.radio-icon img {
+  display: block;
+  width: 100%;
+  height: auto;
+}

@@ -10,18 +10,23 @@
   const handleClick = () => modal.set(AddColumn);
 
   let hoveringColumnId: number;
+  let initColumnId: number;
   let taskId: number;
+  let timeout: number;
 
   const dragStart = (id: number) => {
     taskId = id;
   };
 
   const drop = () => {
-    const taskIndex = $Store.tasks.findIndex((t) => t.id === taskId);
-    const [task] = $Store.tasks.splice(taskIndex, 1);
-    task.columnId = hoveringColumnId;
-    $Store.tasks.push(task);
-    Store.update((store) => store);
+    if (initColumnId !== hoveringColumnId) {
+      const taskIndex = $Store.tasks.findIndex((t) => t.id === taskId);
+      const [task] = $Store.tasks.splice(taskIndex, 1);
+      task.columnId = hoveringColumnId;
+      $Store.tasks.push(task);
+      Store.update((store) => store);
+    }
+    clearTimeout(timeout);
     hoveringColumnId = null;
   };
 
@@ -53,13 +58,23 @@
     />
   </div>
 
-  <div>
+  <hr class="divider" />
+
+  <div class="board__columns flex">
     {#each $Store.columns as column (column.id)}
       <section
-        class="col"
-        class:hovering={hoveringColumnId === column.id}
-        on:dragover={() => handleDragEnter(column.id)}
+        class="column__wrap"
+        class:drag-over={hoveringColumnId === column.id}
+        on:dragstart={() => (initColumnId = column.id)}
+        on:dragover={() => {
+          clearTimeout(timeout);
+          handleDragEnter(column.id);
+        }}
         on:dragend={drop}
+        on:dragleave={() => {
+          clearTimeout(timeout);
+          timeout = setTimeout((_) => (hoveringColumnId = initColumnId), 100);
+        }}
       >
         <Column {column} {dragStart} />
       </section>
@@ -81,18 +96,32 @@
     margin-left: 8px;
   }
 
+  .board__header,
+  .entity__header {
+    padding: 0 20px;
+  }
+
   .board__header {
     justify-content: space-between;
   }
 
-  .col {
-    border: solid lightgray 1px;
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
+  .divider {
+    border-top: solid 1px #e9e9e9;
+    margin: 15px 20px;
   }
 
-  .hovering {
-    border-color: orange;
+  .board__columns {
+    overflow-x: auto;
+  }
+
+  .column__wrap {
+    padding: 0 20px;
+    border-radius: 7px;
+    flex: 1;
+    max-width: 1110px;
+  }
+
+  .drag-over {
+    background-color: #ffe8be;
   }
 </style>

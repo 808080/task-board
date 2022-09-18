@@ -16,6 +16,7 @@
 
   const onSubmit = (e: MouseEvent) => {
     e.preventDefault();
+    title = title.trim();
     if (!title) return;
 
     Store.updateColumn({ id: $ColumnContext.id, title, image });
@@ -29,16 +30,20 @@
 
 <Modal title="Изменить столбец" {onSubmit} submitText="Применить">
   <div>
-    {#each icons as icon}
-      <label>
-        <input type="radio" bind:group={image} name="icon" value={icon} />
-        <img src={icon} alt={icon} srcset="" />
-      </label>
-    {/each}
+    <div class="icons-wrap">
+      {#each icons as icon}
+        <label class="radio-icon" class:selected={image === icon}>
+          <input type="radio" bind:group={image} name="icon" value={icon} />
+          <img src={icon} alt={icon} />
+        </label>
+      {/each}
+    </div>
 
-    <input bind:value={title} placeholder="Название столбца" required />
+    <input
+      bind:value={title}
+      type="text"
+      placeholder="Название столбца"
+      required
+    />
   </div>
 </Modal>
-
-<!-- <style>
-</style> -->

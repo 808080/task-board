@@ -16,7 +16,10 @@
   });
 </script>
 
-<Modal title="Удалить столбец?" {onSubmit} cancelText="Нет" submitText="Да" />
-
-<!-- <style>
-</style> -->
+<Modal
+  title="Удалить столбец?"
+  {onSubmit}
+  cancelText="Нет"
+  submitText="Да"
+  submitClassList="danger"
+/>

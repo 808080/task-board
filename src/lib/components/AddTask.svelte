@@ -9,6 +9,7 @@
 
   const onSubmit = (e: MouseEvent) => {
     e.preventDefault();
+    title = title.trim();
     if (!title) return;
 
     Store.addTask(title, $ColumnContext.id);
@@ -22,7 +23,7 @@
 
 <Modal {onSubmit} title="Новая задача">
   <div>
-    <input bind:value={title} placeholder="Заголовок" required />
+    <input bind:value={title} type="text" placeholder="Заголовок" required />
   </div>
 </Modal>
 

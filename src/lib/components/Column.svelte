@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { SvelteComponent } from "svelte";
+  import { crossfade } from "svelte/transition";
   import ColumnContext from "../../utils/column";
   import modal from "../../utils/modal";
   import Store from "../../utils/store";
@@ -10,7 +12,6 @@
   import DeleteIcon from "../../assets/i-bin.svg";
   import EditColumn from "./EditColumn.svelte";
   import DeleteColumn from "./DeleteColumn.svelte";
-  import type { SvelteComponent } from "svelte";
 
   export let column: Column;
   export let classList: string = "";
@@ -32,42 +33,105 @@
   const handleDragStart = (event: DragEvent, taskId: number) => {
     dragStart(taskId);
     const elem = event.target as HTMLElement;
-    console.log(elem);
-    elem.classList.add("yellow");
+    elem.classList.add("dragged");
   };
 
   const handleDragEnd = (event: DragEvent) => {
     const elem = event.target as HTMLElement;
-    elem.classList.remove("yellow");
+    elem.classList.remove("dragged");
   };
+
+  const [send, receive] = crossfade({
+    fallback(node) {
+      const style = getComputedStyle(node);
+      const transform = style.transform === "none" ? "" : style.transform;
+
+      return {
+        duration: 200,
+        css: (t) => `
+					transform: ${transform} scale(${t});
+					opacity: ${t}
+				`,
+      };
+    },
+  });
 </script>
 
-<div class={classList}>
-  <img src={column.image} alt={column.title} srcset="" />
-  <h5>{column.title}</h5>
-
-  <Button type="button" on:click={handleEditColumn}>
-    <img src={EditIcon} alt="edit" srcset="" />
-  </Button>
-  <Button type="button" on:click={handleDeleteColumn}>
-    <img src={DeleteIcon} alt="remove column" srcset="" />
-  </Button>
-
-  {#each taskList as task (task.id)}
-    <div
-      draggable={true}
-      on:dragstart={(e) => handleDragStart(e, task.id)}
-      on:dragend={handleDragEnd}
-    >
-      <Card {task} />
+<div class="column {classList}">
+  <div class="column__header flex align-c">
+    <div class="flex align-c">
+      <img src={column.image} alt={column.title} />
+      <h5 class="column__title" title={column.title}>{column.title}</h5>
     </div>
-  {/each}
 
-  <Button text="+" type="button" on:click={handleAddTask} />
+    <div>
+      <Button
+        type="button"
+        on:click={handleEditColumn}
+        classList="icon-btn mr-10"
+      >
+        <img src={EditIcon} alt="edit" />
+      </Button>
+      <Button type="button" on:click={handleDeleteColumn} classList="icon-btn">
+        <img src={DeleteIcon} alt="remove column" />
+      </Button>
+    </div>
+  </div>
+
+  <div class="task-list">
+    {#each taskList as task (task.id)}
+      <div
+        in:receive={{ key: task.id }}
+        out:send={{ key: task.id }}
+        class="task__wrap"
+        draggable={true}
+        on:dragstart={(e) => handleDragStart(e, task.id)}
+        on:dragend={handleDragEnd}
+      >
+        <Card {task} />
+      </div>
+    {/each}
+  </div>
+
+  <Button
+    text="＋"
+    type="button"
+    on:click={handleAddTask}
+    classList="add-btn"
+  />
 </div>
 
 <style>
-  .yellow {
-    color: yellow;
+  .column {
+    text-align: center;
+  }
+
+  .column__header {
+    justify-content: space-between;
+    padding: 20px 0;
+  }
+
+  .column__title {
+    font-size: 14px;
+    margin-left: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 215px;
+    font-weight: var(--text-medium);
+  }
+
+  .task-list {
+    display: grid;
+    gap: 16px 10px;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  }
+
+  .task__wrap {
+    cursor: all-scroll;
+  }
+
+  .dragged {
+    opacity: 0.3;
   }
 </style>

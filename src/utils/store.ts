@@ -10,7 +10,7 @@ const createStore = () => {
   const { subscribe, set, update } = writable<TStore>(localStore || {
     tasks: [],
     columns: [],
-    idCounterTask: 0,
+    idCounterTask: 1,
     idCounterColumn: 0
   });
 

@@ -14,6 +14,7 @@
 
   const onSubmit = (e: MouseEvent) => {
     e.preventDefault();
+    title = title.trim();
     if (!title) return;
 
     Store.addColumn(title, selectedIcon);
@@ -23,21 +24,25 @@
 
 <Modal title="Новый столбец" {onSubmit}>
   <div>
-    {#each icons as icon}
-      <label>
-        <input
-          type="radio"
-          bind:group={selectedIcon}
-          name="icon"
-          value={icon}
-        />
-        <img src={icon} alt={icon} srcset="" />
-      </label>
-    {/each}
+    <div class="icons-wrap">
+      {#each icons as icon}
+        <label class="radio-icon" class:selected={selectedIcon === icon}>
+          <input
+            type="radio"
+            bind:group={selectedIcon}
+            name="icon"
+            value={icon}
+          />
+          <img src={icon} alt={icon} />
+        </label>
+      {/each}
+    </div>
 
-    <input bind:value={title} placeholder="Название столбца" required />
+    <input
+      bind:value={title}
+      type="text"
+      placeholder="Название столбца"
+      required
+    />
   </div>
 </Modal>
-
-<!-- <style>
-</style> -->

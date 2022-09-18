@@ -5,6 +5,8 @@
 
   export let cancelText: string = "Отмена";
   export let submitText: string = "Добавить";
+  export let cancelClassList: string = "";
+  export let submitClassList: string = "success";
   export let title: string = "";
   export let classList: string = "";
 
@@ -24,13 +26,18 @@
   class="modal {classList}"
 >
   {#if title}
-    <h3>{title}</h3>
+    <h3 class="modal__title">{title}</h3>
   {/if}
   <slot />
 
-  <div class="actions">
-    <Button type="button" text={cancelText} on:click={onCancel} />
-    <Button type="submit" text={submitText} />
+  <div class="modal__actions">
+    <Button
+      type="button"
+      text={cancelText}
+      on:click={onCancel}
+      classList="btn {cancelClassList}"
+    />
+    <Button type="submit" text={submitText} classList="btn {submitClassList}" />
   </div>
 </form>
 
@@ -42,19 +49,32 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.3);
+    z-index: 10;
   }
 
   .modal {
     position: fixed;
+    z-index: 10;
     left: 50%;
     top: 50%;
     width: calc(100vw - 4rem);
-    max-width: 32rem;
+    max-width: 22rem;
     max-height: calc(100vh - 4rem);
     overflow: auto;
     transform: translate(-50%, -50%);
     padding: 1em;
     border-radius: 0.4rem;
     background: white;
+  }
+
+  .modal__title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .modal__actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-around;
   }
 </style>
