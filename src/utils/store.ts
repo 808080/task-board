@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import type { Column, TStore } from './types';
 
-export const STORAGE_NAME = 'store';
+export const STORAGE_NAME = 'store-task-board';
 
 const createStore = () => {
 
