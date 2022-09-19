@@ -29,6 +29,7 @@
       Store.update((store) => store);
     }
     clearTimeout(timeout);
+    initColumnId = null;
     hoveringColumnId = null;
   };
 
@@ -66,7 +67,7 @@
     {#each $Store.columns as column (column.id)}
       <section
         class="column__wrap"
-        class:drag-over={hoveringColumnId === column.id}
+        class:drag-over={initColumnId && hoveringColumnId === column.id}
         on:dragover={() => {
           clearTimeout(timeout);
           handleDragEnter(column.id);
