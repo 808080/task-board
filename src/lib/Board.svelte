@@ -21,7 +21,7 @@
   };
 
   const drop = () => {
-    if (initColumnId !== hoveringColumnId) {
+    if (initColumnId && initColumnId !== hoveringColumnId) {
       const taskIndex = $Store.tasks.findIndex((t) => t.id === taskId);
       const [task] = $Store.tasks.splice(taskIndex, 1);
       task.columnId = hoveringColumnId;
