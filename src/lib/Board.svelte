@@ -21,7 +21,8 @@
   };
 
   const drop = () => {
-    if (initColumnId && initColumnId !== hoveringColumnId) {
+    console.log(initColumnId, hoveringColumnId);
+    if (initColumnId !== null && initColumnId !== hoveringColumnId) {
       const taskIndex = $Store.tasks.findIndex((t) => t.id === taskId);
       const [task] = $Store.tasks.splice(taskIndex, 1);
       task.columnId = hoveringColumnId;
@@ -67,7 +68,8 @@
     {#each $Store.columns as column (column.id)}
       <section
         class="column__wrap"
-        class:drag-over={initColumnId && hoveringColumnId === column.id}
+        class:drag-over={initColumnId !== null &&
+          hoveringColumnId === column.id}
         on:dragover={() => {
           clearTimeout(timeout);
           handleDragEnter(column.id);
