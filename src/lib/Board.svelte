@@ -6,6 +6,7 @@
   import Column from "./components/Column.svelte";
   import PlayIcon from "../assets/i-play-red.svg";
   import WaveIcon from "../assets/i-wave.svg";
+  import type { Task } from "src/utils/types";
 
   const handleClick = () => modal.set(AddColumn);
 
@@ -14,8 +15,9 @@
   let taskId: number;
   let timeout: number;
 
-  const dragStart = (id: number) => {
-    taskId = id;
+  const dragStart = (task: Task) => {
+    taskId = task.id;
+    initColumnId = task.columnId;
   };
 
   const drop = () => {
@@ -65,7 +67,6 @@
       <section
         class="column__wrap"
         class:drag-over={hoveringColumnId === column.id}
-        on:dragstart={() => (initColumnId = column.id)}
         on:dragover={() => {
           clearTimeout(timeout);
           handleDragEnter(column.id);

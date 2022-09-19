@@ -1,5 +1,7 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import { fade } from "svelte/transition";
+  import ColumnContext from "../../utils/column";
   import modal from "../../utils/modal";
   import Button from "./Button.svelte";
 
@@ -16,6 +18,10 @@
   export let onSubmit: (e: Event) => void = () => {};
 
   const duration = 100;
+
+  onDestroy(() => {
+    ColumnContext.set(null);
+  });
 </script>
 
 <div transition:fade={{ duration }} class="modal-background" on:click={close} />

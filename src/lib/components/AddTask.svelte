@@ -3,7 +3,6 @@
   import Modal from "./Modal.svelte";
   import ColumnContext from "../../utils/column";
   import Store from "../../utils/store";
-  import { onDestroy } from "svelte";
 
   let title = "";
 
@@ -15,10 +14,6 @@
     Store.addTask(title, $ColumnContext.id);
     modal.set(null);
   };
-
-  onDestroy(() => {
-    ColumnContext.set(null);
-  });
 </script>
 
 <Modal {onSubmit} title="Новая задача">

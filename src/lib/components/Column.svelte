@@ -4,7 +4,7 @@
   import ColumnContext from "../../utils/column";
   import modal from "../../utils/modal";
   import Store from "../../utils/store";
-  import type { Column } from "../../utils/types";
+  import type { Column, Task } from "../../utils/types";
   import AddTask from "./AddTask.svelte";
   import Button from "./Button.svelte";
   import Card from "./Card.svelte";
@@ -15,7 +15,7 @@
 
   export let column: Column;
   export let classList: string = "";
-  export let dragStart: (taskIndex: number) => void;
+  export let dragStart: (Task: Task) => void;
 
   $: taskList = $Store.tasks.filter((t) => t.columnId === column.id);
 
@@ -30,8 +30,8 @@
 
   const handleDeleteColumn = () => modalWithContext(DeleteColumn);
 
-  const handleDragStart = (event: DragEvent, taskId: number) => {
-    dragStart(taskId);
+  const handleDragStart = (event: DragEvent, task: Task) => {
+    dragStart(task);
     const elem = event.target as HTMLElement;
     elem.classList.add("dragged");
   };
@@ -85,7 +85,7 @@
         out:send={{ key: task.id }}
         class="task__wrap"
         draggable={true}
-        on:dragstart={(e) => handleDragStart(e, task.id)}
+        on:dragstart={(e) => handleDragStart(e, task)}
         on:dragend={handleDragEnd}
       >
         <Card {task} />
@@ -104,6 +104,10 @@
 <style>
   .column {
     text-align: center;
+  }
+
+  .column img {
+    pointer-events: none;
   }
 
   .column__header {
